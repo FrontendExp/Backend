@@ -1,0 +1,432 @@
+`in nodejs we use require instead of import
+in node we use http because we use node  to create server
+var http = require("http"); (creating http by variable and using require function)
+
+
+http.createServer(function(req,res){  ( to create a server we use the above http.createServer() it is a function)
+
+    console.log(req.url) // (while console we call the req variable)
+
+    res.end('hi')  to display something in the server we use res.end ("something")
+
+}).listen(80); (.listen is a function to name a server)
+
+
+
+for(let i =0,i<1000;i++){
+
+if(i%2 ==0){
+console.log(i, "is a prime number");
+}
+}
+
+mongodb
+mongosh "mongodb+srv://avinesh.frrkapv.mongodb.net/" --apiVersion 1 --username avinesh_26// to connect shell
+mongodb+srv://avinesh_26:<password>@avinesh.frrkapv.mongodb.net/ to connect compass
+
+use database name to switch to the db folder  eg if db name is avi type use avi
+
+
+db.course_list.insert({name:'php'}); to insert obj
+db.course_list.insertMany([{name:'php',fees:1000}]); to insert many obj should be in array bracket
+db.course_list.find({},{fees:1,_id:0}); to find particular
+db.course_list.find({},{fees:1,name:1});
+db.course_list.find(); to find all in db
+db.course_list.updateOne({name:"php"},{$set:{duration:2}}) to update one data
+db.course_list.updateMany({name:"php"},{$set:{duration:2,name:"mongodb"}}) to update all data 
+db.course_list.deleteOne({name:'node'}); to delete a single data
+db.course_list.deleteMany({name:'node'}); to delete more than one
+db.course_list.aggregate([{
+    $limit:2
+}]) // to get the data and will display based on the limit count if limit is 1 only one will display from the data
+
+below code is used to find and group objects
+db.post.aggregate([{
+
+    $match:{like:{$gt:1}}
+
+},
+
+{
+$group:{_id:"$category", totallikes:{$sum:"$like"}}
+
+}
+
+])
+
+
+db.courseList.updateMany({name:"PHP"},{$set:{name:"php",duration:5}});
+
+db.courseList.updateOne({name:"PHP"},{$set:{duration:6}});
+
+db.trainer.insertMany({name:"arun"},{name:"siddiq"},{name:"aravind"},{name:"venkat"},{name:"gowtham"});
+
+ db.courseList.aggregate([{$limit:2}]);
+
+db.post.insertMany([{title:"Zoho",category:"business",likes:55,content:"best product seller"},
+{title:"Tranformers Rise of the Beast",category:"entertainment",likes:75,content:"Optimus Prime is Back"}]);
+
+db.post.insertMany([{title:"beach",category:"blog",likes:15,content:"sea side sun set"},
+{title:"info tech",category:"business",likes:25,content:"income growth"},
+{title:"spiderman",category:"entertainment",likes:35,content:"spidy sense"},
+{title:"travel",category:"blog",likes:40,content:"explore"},
+{title:"CTS",category:"business",likes:32,content:"first class service"},
+{title:"Fast X",category:"entertainment",likes:50,content:"for family"},
+{title:"mountain",category:"blog",likes:60,content:"trekking"},
+{title:"TCS",category:"business",likes:222,content:"top class service"},
+{title:"Flash",category:"entertainment",likes:80,content:"End of DCEU"},
+ {title:"Sky Diving",category:"blog",likes:70,content:"adrenaline rush"}]);
+
+db.post.aggregate([
+    {
+        $match:{likes:{$gt:1}}
+    },
+    {
+        $group:{
+            _id:"$category",
+            totallikes:{$sum:"$likes"}
+               }
+    }
+ ]);
+
+db.post.aggregate([
+    {
+        $group:{_id:"$title"}
+    }
+ ]);
+
+db.post.aggregate([
+    {
+        $project:{
+            "title":1
+        },
+        {
+            $limit:7
+        }
+    }
+ ]);
+
+ //descending order -1
+
+db.post.aggregate([
+    {
+        $sort:{"title":1} 
+    },
+    {
+        $project:{
+            "title":1
+        }
+    }
+ ]);
+
+db.post.aggregate([
+    {
+        $match:{category:"business"}
+    },
+    {
+        $count:"blogCount"
+    }
+ ]);
+
+db.category.insertMany([
+    {
+        categoryName:"entertainment",
+        comments:"Movie"
+    },
+    {
+        categoryName:"blog",
+        comments:"looks great"
+    },
+    {
+        categoryName:"business",
+        comments:"profit"
+    }
+ ]);
+
+aggregate functions - interview ques
+
+db.post.aggregate([
+    {
+        $lookup:{
+            from:"categoryUsers",
+            localField:"category",
+            foreignField:"categoryName",
+            as:"commentsList"
+        }
+    }
+]);
+
+db.testing.aggregate([
+    {
+        $lookup:{
+            from:"post",
+            localField:"category",
+            foreignField:"categoryName",
+            as:"commentsList"
+        }
+    }
+]);
+
+
+get - get
+post - save
+
+delete
+retrive
+
+
+
+importing mongo inside vs code
+
+
+const {
+    MongoClient
+} = require('mongodb');
+const url = 'mongodb+srv://avinesh_26:********@avinesh.frrkapv.mongodb.net';
+const client = new MongoClient(url);
+app.get('/', async function (req, res) {
+
+    await client.connect();
+    console.log('Connected successfully to server');
+    const db = client.db('facebook');
+    const collection = db.collection('post');
+
+    res.send('')
+
+})
+
+app.get('/', async function (req, res) {
+
+    await client.connect();
+    console.log('Connected successfully to server');
+    const db = client.db('facebook');
+    const collection = db.collection('post');
+
+    res.send('')
+
+})
+
+npm i body-parser  to install body parser package
+
+Body-parser parses is an HTTP request body that usually helps when you need to know more than just the URL being hit.
+ Specifically in the context of a POST, PATCH, or PUT HTTP request where the information you want is contained in the body.
+  Using body-parser allows you to access req.
+
+  syntax for body-parser
+
+var bodyParser = require ('body-parser');
+app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json());// converting to json format
+
+
+npm i mongodb to install mongodb
+
+
+db method
+
+app.get('/getlist', async function (req, res) {
+
+    await client.connect();
+    console.log('Connected successfully to server');
+    const db = await client.db('facebook');
+    const collection = await db.collection('post');
+    let data = await collection.find({}).toArray();
+
+    res.send({
+
+        status:true,return:data
+    
+    })
+
+})
+
+
+app.post('/savelist', async function (req, res) {
+
+    console.log()
+
+    await client.connect();
+    console.log('Connected successfully to server');
+    const db = await client.db('facebook');
+    const collection = await db.collection('post');
+ await collection.insertOne(req.body);
+
+    res.send({
+
+        status:true
+    
+    })
+
+})
+
+
+db.testing.insertMany([{
+    
+    name:"msi",
+    category:"laptop",
+    like:6,
+    price:20000
+
+},
+
+{
+
+     name:"dell",
+    category:"laptop",
+    like:7,
+    price:15000
+
+},
+
+{
+
+     name:"lenovo",
+    category:"laptop",
+    like:3,
+    price:10000
+
+},
+
+{
+
+     name:"intel",
+    category:"processor",
+    like:10,
+    price:13000
+
+},
+
+{
+
+     name:"amd",
+    category:"processor",
+    like:10,
+    price:12000
+
+},
+
+{
+
+     name:"snapdragon",
+    category:"processor",
+    like:9,
+    price:8000
+
+},
+
+{
+
+     name:"wd",
+    category:"hardware",
+    like:2,
+    price:20000
+
+},
+
+{
+
+     name:"seagate",
+    category:"hardware",
+    like:5,
+    price:20000
+
+},
+
+
+{
+
+     name:"windows",
+    category:"software",
+    like:15,
+    price:50000
+
+},
+
+{
+
+     name:"ios",
+    category:"software",
+    like:20,
+    price:100000
+
+}])
+
+
+db.testing.aggregate([
+    {
+        $project:{
+            "name":1
+        },
+        {
+            $limit:7
+        }
+    }
+ ]);
+
+
+  // Use the aggregate method to perform advanced data aggregation
+    const data = await collection.aggregate([
+      // Add your aggregation stages here
+      // Example stages:
+      { $match: { category: 'laptop' } }, // Match documents with a specific category
+      { $group: { _id: '$category', count: { $sum: 1 } } }, // Group by category and count documents
+      { $sort: { count: -1 } }, // Sort by count in descending order
+    ]).toArray
+
+
+
+    MongoDB provides several aggregation pipeline stages and operators that can be used to perform various data aggregation operations. Here is a list of commonly used aggregation pipeline stages and operators in MongoDB:
+
+Stages:
+
+$match: Filters the documents based on specified criteria.
+$group: Groups the documents together based on a specified key and performs aggregate calculations.
+$sort: Sorts the documents based on one or more fields.
+$project: Reshapes the documents, includes or excludes fields, and creates computed fields.
+$limit: Limits the number of documents in the pipeline.
+$skip: Skips a specified number of documents in the pipeline.
+$unwind: Deconstructs an array field into individual documents.
+$lookup: Performs a left outer join with another collection.
+$facet: Allows multiple aggregation pipelines within a single stage.
+Operators:
+
+$sum: Calculates the sum of numeric values.
+$avg: Calculates the average of numeric values.
+$min: Returns the minimum value from a set of values.
+$max: Returns the maximum value from a set of values.
+$push: Appends a value to an array.
+$addToSet: Adds a value to an array only if it doesn't already exist.
+$size: Returns the size of an array.
+$cond: Performs conditional operations.
+$regexMatch: Performs regular expression matching.
+$dateToString: Converts a date to a string with a specified format.
+These are just some of the commonly used stages and operators. MongoDB provides many more stages and operators that offer powerful capabilities for data aggregation.
+
+For a comprehensive list of aggregation pipeline stages and operators, including examples and detailed explanations, you can refer to the official MongoDB documentation:\
+
+
+
+req.params - POST
+req.qurey - POST
+req.body - get
+
+
+
+get query ?price=56
+
+post .body - get
+
+root query.params
+
+to export module
+module.exports = 'Hello world';
+
+
+cd ../ to go back from existing file
+cd filename to move from existing file to another file
+
+middle ware are 3 types req res next these three are parameters
+
+// below is for middleware credential checking in postman
+http://localhost:4000/api/admin/admincheck?username=avinesh&password=12345
+
